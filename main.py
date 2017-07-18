@@ -8,15 +8,12 @@ import helper
 import argparse
 
 if __name__ == '__main__':
-	parser = argparse.ArgumentParser()
-	parser.add_argument("--url", help = "the url of web")
-	options = parser.parse_args()
+	# parser = argparse.ArgumentParser()
+	# parser.add_argument("--url", help = "the url of web")
+	# options = parser.parse_args()
 
-	# print(options.url)
 	# http://www.soku.com/search_video/q_王者荣耀_orderby_1_limitdate_0?site=14&page=2
-	
-	pq = helper.get('http://www.soku.com/search_video/q_王者荣耀_orderby_1_limitdate_0?site=14&page=2')
-	for a in pq('.v-link > a'):
-		# print(a.get('href'))
-		helper.runCmd('you-get --format=mp4 %s' % a.get('href'))
-		break
+	for page in range(1, 99):
+		pq = helper.get('http://www.soku.com/search_video/q_王者荣耀_orderby_1_limitdate_0?site=14&page=%d' % page)
+		for a in pq('.v-link > a'):
+			helper.runCmd('you-get -o ./videos --format=mp4 %s' % a.get('href'))
